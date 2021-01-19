@@ -18,15 +18,15 @@ exports.config = {
     //
     specs: [
         // './test/specs/**/*.js',
-        './test/specs/bargain-finder-accessories.js',
-        './test/specs/bargain-finder-beauty.js',
-        './test/specs/bargain-finder-designer.js',
-        './test/specs/bargain-finder-electrical.js',
-        './test/specs/bargain-finder-home.js',
-        './test/specs/bargain-finder-kids.js',
-        './test/specs/bargain-finder-men.js',
+        // './test/specs/bargain-finder-accessories.js',
+        // './test/specs/bargain-finder-beauty.js',
+        // './test/specs/bargain-finder-designer.js',
+        // './test/specs/bargain-finder-electrical.js',
+        // './test/specs/bargain-finder-home.js',
+        // './test/specs/bargain-finder-kids.js',
+        // './test/specs/bargain-finder-men.js',
         './test/specs/bargain-finder-shoes.js',
-        './test/specs/bargain-finder-women.js',
+        // './test/specs/bargain-finder-women.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -48,7 +48,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 3,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -102,7 +102,7 @@ exports.config = {
     baseUrl: 'https://www.davidjones.com/',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 15000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response

@@ -5,9 +5,7 @@ let itemCounts;
 let saleRange1 = [];
 let saleRange2 = [];
 let saleRange3 = [];
-/**
- * sub page containing specific selectors and methods for a specific page
- */
+
 class SalePage extends Page {
     get loadMoreBtn() {return $('span*=Load next')}
     get noMoreResults() {return $('span=No more results')}
@@ -38,13 +36,12 @@ class SalePage extends Page {
                 priceWas = item.$('p.price.was span.price-display').getText();
                 priceNow = item.$('p.price.now span.price-display').getText();
                 let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
-                if (60<=percent && percent<70) {
+                if (50<=percent && percent<70) {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
                     saleRange1.push(name);
                     if (itemTxt.includes('EXTRA')) {
-                        // item.scrollIntoView();
                         item.$('div.item-brand').doubleClick();
                         name = name.split('.').join('').split('/').join('');
                         filePath = 'screenshots/60to70/' + name + '.png';
@@ -55,7 +52,7 @@ class SalePage extends Page {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
-                    saleRange2.push(name);
+                    // saleRange2.push(name);
                     item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/70to80/' + name + '.png';
@@ -86,7 +83,7 @@ class SalePage extends Page {
         for (let i=0; i<saleRange1.length; i++) {
             console.log('=====>>> ' + i + ' - ' + saleRange1[i]);
         }
-        // console.log('Number of Items in ' + category + ' =====>>> ' + items) + '\n';
+        console.log('Number of Items in ' + category + ' =====>>> ' + items) + '\n';
     }
     
 }

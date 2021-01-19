@@ -37,7 +37,7 @@ class SalePage extends Page {
             if (itemTxt.includes('RRP')) {
                 priceWas = item.$('p.price.was span.price-display').getText();
                 priceNow = item.$('p.price.now span.price-display').getText();
-                let percent = Math.round((1-(this.getNumber(priceNow)/this.getNumber(priceWas))*100));
+                let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
                 if (60<=percent && percent<70) {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();

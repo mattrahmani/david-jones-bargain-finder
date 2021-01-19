@@ -32,9 +32,9 @@ class SalePage extends Page {
         let itemsCalculated = 0;
         this.items.forEach(item => {
             itemsCalculated++;
-            item.scrollIntoView();
-            let itemTxt = item.getText();
-            if (itemTxt.includes('RRP')) {
+            item.scrollIntoView(false);
+            let itemTxt = item.getHTML();
+            if (itemTxt.includes('price now') && itemTxt.includes('price was')) {
                 priceWas = item.$('p.price.was span.price-display').getText();
                 priceNow = item.$('p.price.now span.price-display').getText();
                 let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
@@ -48,8 +48,6 @@ class SalePage extends Page {
                         item.$('div.item-brand').doubleClick();
                         name = name.split('.').join('').split('/').join('');
                         filePath = 'screenshots/60to70/' + name + '.png';
-                        // elementId = item.getelementi
-                        // browser.takeElementScreenshot();
                         browser.saveScreenshot(filePath);
                     }
                 }
@@ -57,10 +55,10 @@ class SalePage extends Page {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
-                    // saleRange2.push(name);
+                    saleRange2.push(name);
                     item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
-                    filePath = 'screenshots/60to70/' + name + '.png';
+                    filePath = 'screenshots/70to80/' + name + '.png';
                     browser.saveScreenshot(filePath);
                 }
                 if (80<=percent) {
@@ -70,7 +68,7 @@ class SalePage extends Page {
                     // saleRange3.push(name);
                     item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
-                    filePath = 'screenshots/60to70/' + name + '.png';
+                    filePath = 'screenshots/over80/' + name + '.png';
                     browser.saveScreenshot(filePath);
                 }
                 

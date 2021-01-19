@@ -11,7 +11,7 @@ class SalePage extends Page {
     get noMoreResults() {return $('span=No more results')}
     get items() {return $$('div.item')}
 
-    loadAllProducts() {
+    loadAllProducts(category) {
         for (let i=0; i<100; i++) {
             if (this.noMoreResults.isDisplayed()) {
                 break;
@@ -20,6 +20,7 @@ class SalePage extends Page {
                 this.loadMoreBtn.waitForClickable();
                 this.loadMoreBtn.click();
                 browser.pause(500)
+                console.log(category.concat(i+1));
             }
         }
         itemCounts = this.items.length;
@@ -30,7 +31,7 @@ class SalePage extends Page {
         let itemsCalculated = 0;
         this.items.forEach(item => {
             itemsCalculated++;
-            item.scrollIntoView(false);
+            item.scrollIntoView();
             let itemTxt = item.getHTML();
             if (itemTxt.includes('price now') && itemTxt.includes('price was')) {
                 priceWas = item.$('p.price.was span.price-display').getText();
@@ -83,7 +84,7 @@ class SalePage extends Page {
         for (let i=0; i<saleRange1.length; i++) {
             console.log('=====>>> ' + i + ' - ' + saleRange1[i]);
         }
-        console.log('Number of Items in ' + category + ' =====>>> ' + items) + '\n';
+        console.log('Number of Items in ' + category + ' =====>>> ' + itemCounts) + '\n';
     }
     
 }

@@ -18,15 +18,15 @@ exports.config = {
     //
     specs: [
         // './test/specs/**/*.js',
-        // './test/specs/bargain-finder-accessories.js',
-        // './test/specs/bargain-finder-beauty.js',
-        // './test/specs/bargain-finder-designer.js',
-        // './test/specs/bargain-finder-electrical.js',
-        // './test/specs/bargain-finder-home.js',
-        // './test/specs/bargain-finder-kids.js',
-        // './test/specs/bargain-finder-men.js',
-        './test/specs/bargain-finder-shoes.js',
-        // './test/specs/bargain-finder-women.js',
+        // './test/specs/06-bargain-finder-accessories.js',
+        // './test/specs/03-bargain-finder-beauty.js',
+        // './test/specs/05-bargain-finder-designer.js',
+        // './test/specs/01-bargain-finder-electrical.js',
+        './test/specs/07-bargain-finder-home.js',
+        './test/specs/08-bargain-finder-kids.js',
+        './test/specs/02-bargain-finder-men.js',
+        // './test/specs/09-bargain-finder-shoes.js',
+        // './test/specs/04-bargain-finder-women.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -102,7 +102,7 @@ exports.config = {
     baseUrl: 'https://www.davidjones.com/',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 15000,
+    waitforTimeout: 30000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -146,7 +146,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 600000
+        timeout: 1200000
     },
     //
     // =====

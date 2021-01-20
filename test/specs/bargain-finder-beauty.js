@@ -7,7 +7,6 @@ describe('David Jones bargain finder', () => {
         SalePage.loadAllProducts('Beauty');
         SalePage.calculateDiscount();
         SalePage.logSaleItems('Beauty');
-        // SalePage.newFinder('Beauty');
         console.log('=====>>> Beauty bargains search is finished <<<=====\n')
     });
 });

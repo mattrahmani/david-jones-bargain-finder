@@ -17,16 +17,16 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        // './test/specs/**/*.js',
-        './test/specs/06-bargain-finder-accessories.js',
-        // './test/specs/03-bargain-finder-beauty.js',
-        // './test/specs/05-bargain-finder-designer.js',
-        // './test/specs/01-bargain-finder-electrical.js',
-        './test/specs/07-bargain-finder-home.js',
-        './test/specs/08-bargain-finder-kids.js',
-        './test/specs/02-bargain-finder-men.js',
-        './test/specs/09-bargain-finder-shoes.js',
-        './test/specs/04-bargain-finder-women.js',
+        './test/specs/**/*.js',
+        // './test/specs/bargain-finder-accessories.js',
+        // './test/specs/bargain-finder-beauty.js',
+        // './test/specs/bargain-finder-designer.js',
+        // './test/specs/bargain-finder-electrical.js',
+        // './test/specs/bargain-finder-home.js',
+        // './test/specs/bargain-finder-kids.js',
+        // './test/specs/bargain-finder-men.js',
+        // './test/specs/bargain-finder-shoes.js',
+        // './test/specs/bargain-finder-women.js',
     ],
     // Patterns to exclude.
     exclude: [

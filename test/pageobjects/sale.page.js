@@ -86,10 +86,10 @@ class SalePage extends Page {
     }
 
     logSaleItems(category) {
-        console.log('\n=====>>>' + category + ' sale list between 60%-70%:');
-        for (let i=0; i<saleRange1.length; i++) {
-            console.log('=====>>> ' + i + ' - ' + saleRange1[i]);
-        }
+        // console.log('\n=====>>>' + category + ' sale list between 60%-70%:');
+        // for (let i=0; i<saleRange1.length; i++) {
+        //     console.log('=====>>> ' + i + ' - ' + saleRange1[i]);
+        // }
         console.log('Number of Items in ' + category + ' =====>>> ' + itemCounts) + '\n';
     }
 

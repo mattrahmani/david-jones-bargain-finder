@@ -17,16 +17,16 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/specs/**/*.js',
-        // './test/specs/06-bargain-finder-accessories.js',
+        // './test/specs/**/*.js',
+        './test/specs/06-bargain-finder-accessories.js',
         // './test/specs/03-bargain-finder-beauty.js',
         // './test/specs/05-bargain-finder-designer.js',
         // './test/specs/01-bargain-finder-electrical.js',
-        // './test/specs/07-bargain-finder-home.js',
-        // './test/specs/08-bargain-finder-kids.js',
-        // './test/specs/02-bargain-finder-men.js',
-        // './test/specs/09-bargain-finder-shoes.js',
-        // './test/specs/04-bargain-finder-women.js',
+        './test/specs/07-bargain-finder-home.js',
+        './test/specs/08-bargain-finder-kids.js',
+        './test/specs/02-bargain-finder-men.js',
+        './test/specs/09-bargain-finder-shoes.js',
+        './test/specs/04-bargain-finder-women.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -102,11 +102,11 @@ exports.config = {
     baseUrl: 'https://www.davidjones.com/',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 30000,
+    waitforTimeout: 60000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 120000,
+    connectionRetryTimeout: 12000000,
     //
     // Default request retries count
     connectionRetryCount: 3,
@@ -146,7 +146,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 1200000
+        timeout: 12000000
     },
     //
     // =====

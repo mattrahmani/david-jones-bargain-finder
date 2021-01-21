@@ -11,20 +11,22 @@ const Page = require('./page');
 
 class SalePage extends Page {
     get loadMoreBtn() {return $('span*=Load next')}
+    get loadBtnContainer() {return $('a.btn.load-products')}
     get noMoreResults() {return $('span=No more results')}
     get items() {return $$('div.item')}
 
     loadAllProducts(category) {
         for (let i=0; i<100; i++) {
+            this.loadBtnContainer.waitForExist();
             if (this.noMoreResults.isExisting()) {
                 break;
             }
             else {
-                console.log(category.concat(i+1));
                 this.loadMoreBtn.waitForClickable();
                 this.loadMoreBtn.click();
                 browser.pause(500)
             }
+            console.log(category.concat(i+1));
         }
     }
 

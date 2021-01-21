@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/designer-sale');
         SalePage.loadAllProducts('Designer');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Designer');
+        // SalePage.logSaleItems('Designer');
         console.log('=====>>> Designer bargains search is finished <<<=====\n')
     });
 });

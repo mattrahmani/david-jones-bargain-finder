@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/home-and-food');
         SalePage.loadAllProducts('Home');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Home');
+        // SalePage.logSaleItems('Home');
         console.log('=====>>> Home bargains search is finished <<<=====\n')
     });
 });

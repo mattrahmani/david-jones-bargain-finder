@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/electrical');
         SalePage.loadAllProducts('Electrical');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Electrical');
+        // SalePage.logSaleItems('Electrical');
         console.log('=====>>> Electrical bargains search is finished <<<=====\n')
     });
 });

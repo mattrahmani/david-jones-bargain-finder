@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/women');
         SalePage.loadAllProducts('Women');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Women');
+        // SalePage.logSaleItems('Women');
         console.log('=====>>> Women bargains search is finished <<<=====\n')
     });
 });

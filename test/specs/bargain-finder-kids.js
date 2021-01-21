@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/kids');
         SalePage.loadAllProducts('Kids');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Kids');
+        // SalePage.logSaleItems('Kids');
         console.log('=====>>> Kids bargains search is finished <<<=====\n')
     });
 });

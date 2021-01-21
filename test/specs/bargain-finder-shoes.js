@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/shoes');
         SalePage.loadAllProducts('Shoes');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Shoes');
+        // SalePage.logSaleItems('Shoes');
         console.log('=====>>> Shoes bargains search is finished <<<=====\n')
     });
 });

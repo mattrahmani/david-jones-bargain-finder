@@ -6,7 +6,7 @@ describe('David Jones bargain finder', () => {
         SalePage.open('sale/bags-and-accessories');
         SalePage.loadAllProducts('Accessories');
         SalePage.calculateDiscount();
-        SalePage.logSaleItems('Accessories');
+        // SalePage.logSaleItems('Accessories');
         console.log('=====>>> Accessories bargains search is finished <<<=====\n')
     });
 });

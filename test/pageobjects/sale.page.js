@@ -10,21 +10,23 @@ const Page = require('./page');
 // let itemsCalculated = 0;
 
 class SalePage extends Page {
-    get loadMoreBtn() {return $('span*=Load next')}
+    get loadMoreBtn() {return $('a[class="btn load-products loading-button externalLink"]')}
     get loadCompletedBtn() {return $('a.btn.load-products.progress-completed')}
     get noMoreResults() {return $('span=No more results')}
     get items() {return $$('div.item')}
 
     loadAllProducts(category) {
         for (let i=0; i<100; i++) {
+            browser.deleteAllCookies();
             console.log(category.concat(i+1));
             if (this.noMoreResults.isExisting()) {
                 break;
             }
             else {
+                this.loadMoreBtn.waitForExist();
                 this.loadMoreBtn.click();
             }
-            this.loadCompletedBtn.waitForExist(true);
+            // this.loadCompletedBtn.waitForExist();
         }
     }
 

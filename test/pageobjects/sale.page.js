@@ -16,7 +16,7 @@ class SalePage extends Page {
 
     loadAllProducts(category) {
         for (let i=0; i<100; i++) {
-            if (this.noMoreResults.isDisplayed()) {
+            if (this.noMoreResults.isExisting()) {
                 break;
             }
             else {

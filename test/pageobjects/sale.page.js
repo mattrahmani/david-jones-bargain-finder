@@ -24,7 +24,7 @@ class SalePage extends Page {
             else {
                 this.loadMoreBtn.click();
             }
-            this.loadCompletedBtn.waitForExist();
+            this.loadCompletedBtn.waitForExist(true);
         }
     }
 

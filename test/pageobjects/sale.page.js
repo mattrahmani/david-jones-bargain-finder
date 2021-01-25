@@ -11,11 +11,13 @@ const Page = require('./page');
 
 class SalePage extends Page {
     get loadMoreBtn() {return $('a[class="btn load-products loading-button externalLink"]')}
-    get loadCompletedBtn() {return $('a.btn.load-products.progress-completed')}
-    get noMoreResults() {return $('span=No more results')}
+    get loadCompletedBtn() {return $('a.progress-completed')}
+    get noMoreResults() {return $('a.btn.load-products.loading-button.externalLink.disabled')}
     get items() {return $$('div.item')}
+    get productLoaderButton() {return $('div.product-loader-button a')}
 
     loadAllProducts(category) {
+        let j=1;
         for (let i=0; i<100; i++) {
             browser.deleteAllCookies();
             console.log(category.concat(i+1));
@@ -23,8 +25,9 @@ class SalePage extends Page {
                 break;
             }
             else {
-                this.loadMoreBtn.waitForExist();
                 this.loadMoreBtn.click();
+                j++;
+                browser.waitUntil(() => $('div.page-'+j+'.isUpdated').isExisting());
             }
             // this.loadCompletedBtn.waitForExist();
         }

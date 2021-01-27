@@ -1,5 +1,6 @@
 const { assert } = require('chai');
 const Page = require('./page');
+const fs = require('fs');
 
 // let itemCounts;
 // let saleRange1 = [];
@@ -57,7 +58,9 @@ class SalePage extends Page {
                         item.$('div.item-brand').doubleClick();
                         name = name.split('.').join('').split('/').join('');
                         filePath = 'screenshots/60to70/' + name + '.png';
-                        browser.saveScreenshot(filePath);
+                        if (!fs.existsSync(filePath)) {
+                            browser.saveScreenshot(filePath);
+                        }
                     }
                 }
                 if (70<=percent && percent<80) {
@@ -68,7 +71,9 @@ class SalePage extends Page {
                     item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/70to80/' + name + '.png';
-                    browser.saveScreenshot(filePath);
+                    if (!fs.existsSync(filePath)) {
+                        browser.saveScreenshot(filePath);
+                    }
                 }
                 if (80<=percent) {
                     itemBrand = item.$('div.item-brand').getText();
@@ -78,7 +83,9 @@ class SalePage extends Page {
                     item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/over80/' + name + '.png';
-                    browser.saveScreenshot(filePath);
+                    if (!fs.existsSync(filePath)) {
+                        browser.saveScreenshot(filePath);
+                    }
                 }
                 
             }

@@ -16,6 +16,7 @@ class SalePage extends Page {
     get noMoreResults() {return $('a.btn.load-products.loading-button.externalLink.disabled')}
     get items() {return $$('div.item')}
     get productLoaderButton() {return $('div.product-loader-button a')}
+    get backTopButton() {return $('div#back-top')}
 
     loadAllProducts(category) {
         let j=1;
@@ -28,10 +29,11 @@ class SalePage extends Page {
             else {
                 this.loadMoreBtn.click();
                 j++;
-                browser.waitUntil(() => $('div.page-'+j+'.isUpdated').isExisting());
+                // browser.waitUntil(() => $('div.page-'+j+'.isUpdated').isExisting());
             }
-            // this.loadCompletedBtn.waitForExist();
         }
+        this.backTopButton.click();
+        browser.waitUntil(() => this.items[0].isDisplayedInViewport());
     }
 
     calculateDiscount() {
@@ -41,24 +43,22 @@ class SalePage extends Page {
         this.items.forEach(item => {
             itemsCalculated++;
             item.scrollIntoView();
+            browser.waitUntil(() => item.isDisplayedInViewport());
             itemTxt = item.getHTML();
             if (itemTxt.includes('price was')) {
                 priceWas = item.$('p.price.was span.price-display').getText();
                 priceNow = item.$('p.price.now span.price-display').getText();
                 let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
                 if (50<=percent && percent<70) {
-                    // itemBrand = item.$('div.item-brand').getText();
-                    // itemName = item.$('div.item-detail h4 a').getText();
-                    // name = itemBrand + ' ' + itemName;
                     // saleRange1.push(name);
                     if (itemTxt.includes('EXTRA')) {
                         itemBrand = item.$('div.item-brand').getText();
                         itemName = item.$('div.item-detail h4 a').getText();
                         name = itemBrand + ' ' + itemName;
-                        item.$('div.item-brand').doubleClick();
                         name = name.split('.').join('').split('/').join('');
                         filePath = 'screenshots/60to70/' + name + '.png';
                         if (!fs.existsSync(filePath)) {
+                            browser.highlightItem(item.$('div.item-brand'));
                             browser.saveScreenshot(filePath);
                         }
                     }
@@ -68,10 +68,10 @@ class SalePage extends Page {
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
                     // saleRange2.push(name);
-                    item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/70to80/' + name + '.png';
                     if (!fs.existsSync(filePath)) {
+                        browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
                     }
                 }
@@ -80,10 +80,10 @@ class SalePage extends Page {
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
                     // saleRange3.push(name);
-                    item.$('div.item-brand').doubleClick();
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/over80/' + name + '.png';
                     if (!fs.existsSync(filePath)) {
+                        browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
                     }
                 }
@@ -104,77 +104,6 @@ class SalePage extends Page {
         // }
         console.log('Number of Items in ' + category + ' =====>>> ' + itemCounts) + '\n';
     }
-
-    // newFinder(category) {
-    //     let page = 1;
-    //     for (let j=0; j<100; j++) {
-    //         browser.deleteAllCookies();
-    //         browser.delete
-    //         console.log(category + page);
-    //         this.itemFinder();
-            
-    //         if (this.loadMoreBtn.isExisting()) {
-    //             this.loadMoreBtn.click();
-    //             browser.pause(1000);
-    //             page++;
-    //         }
-    //         else {
-    //             itemCounts = this.items.length;
-    //             break;
-    //         }
-    //     }
-    //     assert.equal(itemCounts, itemsCalculated, '!!!!! Some items are not calculated !!!!!');
-    // }
-
-    // itemFinder() {
-    //     for (i; i<this.items.length; i++) {
-    //         // console.log('i: ' + i);
-    //         // console.log('Items: ' + this.items.length);
-    //         itemsCalculated++;
-    //         this.items[i].scrollIntoView();
-    //         // this.items[i].waitForDisplayed();
-    //         let itemTxt = this.items[i].getHTML();
-    //         if (itemTxt.includes('price now') && itemTxt.includes('price was')) {
-    //             priceWas = this.items[i].$('p.price.was span.price-display').getText();
-    //             priceNow = this.items[i].$('p.price.now span.price-display').getText();
-    //             let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
-
-    //             if (50<=percent && percent<70) {
-    //                 itemBrand = this.items[i].$('div.item-brand').getText();
-    //                 itemName = this.items[i].$('div.item-detail h4 a').getText();
-    //                 name = itemBrand + ' ' + itemName;
-    //                 // saleRange1.push(name);
-    //                 if (itemTxt.includes('EXTRA')) {
-    //                     this.items[i].$('div.item-brand').doubleClick();
-    //                     name = name.split('.').join('').split('/').join('');
-    //                     filePath = 'screenshots/60to70/' + name + '.png';
-    //                     browser.saveScreenshot(filePath);
-    //                 }
-    //             }
-    //             if (70<=percent && percent<80) {
-    //                 itemBrand = this.items[i].$('div.item-brand').getText();
-    //                 itemName = this.items[i].$('div.item-detail h4 a').getText();
-    //                 name = itemBrand + ' ' + itemName;
-    //                 // saleRange2.push(name);
-    //                 this.items[i].$('div.item-brand').doubleClick();
-    //                 name = name.split('.').join('').split('/').join('');
-    //                 filePath = 'screenshots/70to80/' + name + '.png';
-    //                 browser.saveScreenshot(filePath);
-    //             }
-    //             if (80<=percent) {
-    //                 itemBrand = this.items[i].$('div.item-brand').getText();
-    //                 itemName = this.items[i].$('div.item-detail h4 a').getText();
-    //                 name = itemBrand + ' ' + itemName;
-    //                 // saleRange3.push(name);
-    //                 this.items[i].$('div.item-brand').doubleClick();
-    //                 name = name.split('.').join('').split('/').join('');
-    //                 filePath = 'screenshots/over80/' + name + '.png';
-    //                 browser.saveScreenshot(filePath);
-    //             }
-    //         }
-            
-    //     }
-    // }
 }
 
 module.exports = new SalePage();

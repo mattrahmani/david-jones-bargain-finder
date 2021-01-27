@@ -29,11 +29,10 @@ class SalePage extends Page {
             else {
                 this.loadMoreBtn.click();
                 j++;
-                // browser.waitUntil(() => $('div.page-'+j+'.isUpdated').isExisting());
+                browser.waitUntil(() => $('div.page-'+j+'.isUpdated').isExisting());
             }
         }
         this.backTopButton.click();
-        browser.waitUntil(() => this.items[0].isDisplayedInViewport());
     }
 
     calculateDiscount() {

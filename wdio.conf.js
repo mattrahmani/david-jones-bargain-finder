@@ -195,6 +195,9 @@ exports.config = {
         browser.addCommand('highlightItem', function (element) {
             browser.execute('arguments[0].style.outline = "#f00 solid 4px";', element);
         });
+        browser.addCommand('removeHighlight', function (element) {
+            browser.execute('arguments[0].style.outline = "#f00 solid 0px";', element);
+        });
     },
     /**
      * Runs before a WebdriverIO command gets executed.

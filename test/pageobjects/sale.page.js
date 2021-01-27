@@ -59,6 +59,7 @@ class SalePage extends Page {
                         if (!fs.existsSync(filePath)) {
                             browser.highlightItem(item.$('div.item-brand'));
                             browser.saveScreenshot(filePath);
+                            browser.removeHighlight(item.$('div.item-brand'));
                         }
                     }
                 }
@@ -72,6 +73,7 @@ class SalePage extends Page {
                     if (!fs.existsSync(filePath)) {
                         browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
+                        browser.removeHighlight(item.$('div.item-brand'));
                     }
                 }
                 if (80<=percent) {
@@ -84,6 +86,7 @@ class SalePage extends Page {
                     if (!fs.existsSync(filePath)) {
                         browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
+                        browser.removeHighlight(item.$('div.item-brand'));
                     }
                 }
                 

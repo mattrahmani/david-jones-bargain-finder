@@ -27,6 +27,7 @@ class SalePage extends Page {
                 break;
             }
             else {
+                this.loadMoreBtn.scrollIntoView();
                 this.loadMoreBtn.click();
                 j++;
                 browser.waitUntil(() => $('div.page-'+j+'.isUpdated').isExisting());

@@ -49,21 +49,21 @@ class SalePage extends Page {
                 priceWas = item.$('p.price.was span.price-display').getText();
                 priceNow = item.$('p.price.now span.price-display').getText();
                 let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
-                // if (50<=percent && percent<70) {
-                //     // saleRange1.push(name);
-                //     if (itemTxt.includes('EXTRA')) {
-                //         itemBrand = item.$('div.item-brand').getText();
-                //         itemName = item.$('div.item-detail h4 a').getText();
-                //         name = itemBrand + ' ' + itemName;
-                //         name = name.split('.').join('').split('/').join('');
-                //         filePath = 'screenshots/60to70/' + name + '.png';
-                //         if (!fs.existsSync(filePath)) {
-                //             browser.highlightItem(item.$('div.item-brand'));
-                //             browser.saveScreenshot(filePath);
-                //             browser.removeHighlight(item.$('div.item-brand'));
-                //         }
-                //     }
-                // }
+                if (60<=percent && percent<70) {
+                    // saleRange1.push(name);
+                    // if (itemTxt.includes('EXTRA')) {
+                        itemBrand = item.$('div.item-brand').getText();
+                        itemName = item.$('div.item-detail h4 a').getText();
+                        name = itemBrand + ' ' + itemName;
+                        name = name.split('.').join('').split('/').join('');
+                        filePath = 'screenshots/60to70/' + name + '.png';
+                        if (!fs.existsSync(filePath)) {
+                            browser.highlightItem(item.$('div.item-brand'));
+                            browser.saveScreenshot(filePath);
+                            browser.removeHighlight(item.$('div.item-brand'));
+                        }
+                    // }
+                }
                 if (70<=percent && percent<80) {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();

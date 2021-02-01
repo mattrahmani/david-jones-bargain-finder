@@ -31,7 +31,7 @@ exports.config = {
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
-        './test/specs/bargain-finder-designer.js',
+        // './test/specs/bargain-finder-designer.js',
         // './test/specs/02-bargain-finder-men.js',
     ],
     //

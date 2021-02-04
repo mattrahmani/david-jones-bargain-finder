@@ -17,16 +17,16 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/specs/**/*.js',
+        // './test/specs/**/*.js',
         // './test/specs/bargain-finder-accessories.js',
         // './test/specs/bargain-finder-beauty.js',
         // './test/specs/bargain-finder-designer.js',
         // './test/specs/bargain-finder-electrical.js',
         // './test/specs/bargain-finder-home.js',
         // './test/specs/bargain-finder-kids.js',
-        // './test/specs/02-bargain-finder-men.js',
+        './test/specs/02-bargain-finder-men.js',
         // './test/specs/bargain-finder-shoes.js',
-        // './test/specs/01-bargain-finder-women.js',
+        './test/specs/01-bargain-finder-women.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -199,6 +199,27 @@ exports.config = {
         browser.addCommand('removeHighlight', function (element) {
             browser.execute('arguments[0].style.outline = "#f00 solid 0px";', element);
         });
+    },
+
+    afterStep: function (test, context, { error, result, duration, passed, retries }) {
+        if (error) {
+            browser.takeScreenshot();
+        }
+      },
+
+    afterTest: function (test, context, { error, result, duration, passed, retries }) {
+        
+        if(passed != true){
+            console.log("###########################   TEST FAILED : "+ test.title +"  ###################################");
+            
+            browser.saveScreenshot("errorScreenshot/"+test.title+" Error.png");
+        }
+
+        if(error == true){
+            console.log("###########################   TEST FAILED : "+ test.title +"  ###################################");
+            
+            browser.saveScreenshot("errorScreenshot/"+test.title+" Error.png");
+        }
     },
     /**
      * Runs before a WebdriverIO command gets executed.

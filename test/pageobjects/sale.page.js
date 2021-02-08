@@ -37,7 +37,7 @@ class SalePage extends Page {
     }
 
     calculateDiscount() {
-        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemTxt;
+        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemTxt, percent;
         let itemsCalculated = 0;
         let itemCounts = this.items.length;
         this.items.forEach(item => {
@@ -46,12 +46,11 @@ class SalePage extends Page {
             browser.waitUntil(() => item.isDisplayedInViewport());
             itemTxt = item.getHTML();
             if (itemTxt.includes('price was')) {
-                priceWas = item.$('p.price.was span.price-display').getText();
-                priceNow = item.$('p.price.now span.price-display').getText();
-                let percent = (1-(this.getNumber(priceNow)/this.getNumber(priceWas)))*100;
+                priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
+                priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
+                percent = (1-(priceNow/priceWas))*100;
                 if (60<=percent && percent<70) {
-                    // saleRange1.push(name);
-                    // if (itemTxt.includes('EXTRA')) {
+                    if (itemTxt.includes('EXTRA') || itemTxt.includes('SAVE')) {
                         itemBrand = item.$('div.item-brand').getText();
                         itemName = item.$('div.item-detail h4 a').getText();
                         name = itemBrand + ' ' + itemName;
@@ -62,13 +61,12 @@ class SalePage extends Page {
                             browser.saveScreenshot(filePath);
                             browser.removeHighlight(item.$('div.item-brand'));
                         }
-                    // }
+                    }
                 }
                 if (70<=percent && percent<80) {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
-                    // saleRange2.push(name);
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/70to80/' + name + '.png';
                     if (!fs.existsSync(filePath)) {
@@ -81,7 +79,6 @@ class SalePage extends Page {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
-                    // saleRange3.push(name);
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/over80/' + name + '.png';
                     if (!fs.existsSync(filePath)) {

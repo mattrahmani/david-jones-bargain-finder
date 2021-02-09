@@ -46,8 +46,8 @@ class SalePage extends Page {
             browser.waitUntil(() => item.isDisplayedInViewport());
             itemTxt = item.getHTML();
             if (itemTxt.includes('price was')) {
-                priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
-                priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
+                priceWas = item.$('p.price.was span.price-display').getText();
+                priceNow = item.$('p.price.now span.price-display').getText();
                 percent = (1-(priceNow/priceWas))*100;
                 if (60<=percent && percent<70) {
                     if (itemTxt.includes('EXTRA') || itemTxt.includes('SAVE')) {

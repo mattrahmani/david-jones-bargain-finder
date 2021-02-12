@@ -52,29 +52,31 @@ class SalePage extends Page {
             // console.log(itemTxt)
             // pricing = item.$('div.pricing');
             // let newMan = pricing.getHtml();
-            console.log(itemsCalculated)
+            // console.log(itemsCalculated)
             if (itemHtml.includes('was', 'now')) {
                 
                 
                 priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
                 priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
-                if (itemText.includes('SAVE' && '%')) {
-                    console.log(itemText)
-                    item.scrollIntoView();
-                    browser.highlightItem(item);
+                if (itemText.includes('SAVE', '%')) {
+                    // console.log(itemText)
+                    // item.scrollIntoView();
+                    // browser.highlightItem(item);
                     discount = (item.$('p.offer').getText().split(' '))[1];
-                    console.log('discount: '+ discount)
+                    // console.log('discount: '+ discount)
                     discountRate = discount.slice(0,2);
-                    priceNow = priceNow - (priceNow * discount/100);
+                    priceNow = priceNow - (priceNow * discountRate/100);
+                    // console.log('now: ' + priceNow)
                 }
-                if (itemText.includes('EXTRA' && '%')) {
-                    console.log(itemText)
-                    item.scrollIntoView();
-                    browser.highlightItem(item);
+                if (itemText.includes('EXTRA', '%')) {
+                    // console.log(itemText)
+                    // item.scrollIntoView();
+                    // browser.highlightItem(item);
                     discount = (item.$('p.offer').getText().split(' '))[1];
-                    console.log('discount: '+ discount)
+                    // console.log('discount: '+ discount)
                     discountRate = discount.slice(0,2);
-                    priceNow = priceNow - (priceNow * discount/100);
+                    priceNow = priceNow - (priceNow * discountRate/100);
+                    // console.log('now: ' + priceNow)
                 }
 
                 percent = ((1-(priceNow/priceWas))*100).toFixed(0);

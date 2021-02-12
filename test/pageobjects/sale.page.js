@@ -37,38 +37,50 @@ class SalePage extends Page {
     }
 
     calculateDiscount() {
-        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemTxt, percent;
+        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemTxt, percent, discount, discountRate;
         let itemsCalculated = 0;
         let itemCounts = this.items.length;
         this.items.forEach(item => {
             itemsCalculated++;
-            item.scrollIntoView();
-            browser.waitUntil(() => item.isDisplayedInViewport());
+            // item.scrollIntoView();
+            // browser.waitUntil(() => item.isDisplayedInViewport());
             itemTxt = item.getHTML();
             if (itemTxt.includes('price was')) {
                 priceWas = item.$('p.price.was span.price-display').getText();
                 priceNow = item.$('p.price.now span.price-display').getText();
-                percent = (1-(priceNow/priceWas))*100;
-                if (60<=percent && percent<70) {
-                    if (itemTxt.includes('EXTRA') || itemTxt.includes('SAVE')) {
+                if (itemTxt.includes('EXTRA')) {
+                    discount = (item.$('a*=EXTRA').getText().split(' '))[1];
+                    discountRate = discount.slice(0,2);
+                    priceNow = priceNow - (priceNow * discount/100);
+                }
+                if (itemTxt.includes('SAVE')) {
+                    discount = (item.$('a*=SAVE').getText().split(' '))[1];
+                    discountRate = discount.slice(0,2);
+                    priceNow = priceNow - (priceNow * discount/100);
+                }
+
+                percent = ((1-(priceNow/priceWas))*100).toFixed(0);
+
+                if (65<=percent && percent<70) {
+                    
                         itemBrand = item.$('div.item-brand').getText();
                         itemName = item.$('div.item-detail h4 a').getText();
                         name = itemBrand + ' ' + itemName;
                         name = name.split('.').join('').split('/').join('');
-                        filePath = 'screenshots/60to70/' + name + '.png';
+                        filePath = 'screenshots/60to70/' + percent + ' ' + name + '.png';
                         if (!fs.existsSync(filePath)) {
                             browser.highlightItem(item.$('div.item-brand'));
                             browser.saveScreenshot(filePath);
                             browser.removeHighlight(item.$('div.item-brand'));
                         }
-                    }
+                    
                 }
                 if (70<=percent && percent<80) {
                     itemBrand = item.$('div.item-brand').getText();
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
                     name = name.split('.').join('').split('/').join('');
-                    filePath = 'screenshots/70to80/' + name + '.png';
+                    filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
                     if (!fs.existsSync(filePath)) {
                         browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
@@ -80,7 +92,7 @@ class SalePage extends Page {
                     itemName = item.$('div.item-detail h4 a').getText();
                     name = itemBrand + ' ' + itemName;
                     name = name.split('.').join('').split('/').join('');
-                    filePath = 'screenshots/over80/' + name + '.png';
+                    filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
                     if (!fs.existsSync(filePath)) {
                         browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);

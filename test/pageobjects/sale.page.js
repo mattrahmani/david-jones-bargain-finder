@@ -37,24 +37,42 @@ class SalePage extends Page {
     }
 
     calculateDiscount() {
-        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemTxt, percent, discount, discountRate;
+
+        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemHtml, percent, discount, discountRate, pricing, itemText;
         let itemsCalculated = 0;
         let itemCounts = this.items.length;
+        
+
         this.items.forEach(item => {
             itemsCalculated++;
             // item.scrollIntoView();
             // browser.waitUntil(() => item.isDisplayedInViewport());
-            itemTxt = item.getHTML();
-            if (itemTxt.includes('price was')) {
-                priceWas = item.$('p.price.was span.price-display').getText();
-                priceNow = item.$('p.price.now span.price-display').getText();
-                if (itemTxt.includes('EXTRA')) {
-                    discount = (item.$('a*=EXTRA').getText().split(' '))[1];
+            itemHtml = item.getHTML();
+            itemText = item.getText();
+            // console.log(itemTxt)
+            // pricing = item.$('div.pricing');
+            // let newMan = pricing.getHtml();
+            console.log(itemsCalculated)
+            if (itemHtml.includes('was', 'now')) {
+                
+                
+                priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
+                priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
+                if (itemText.includes('SAVE' && '%')) {
+                    console.log(itemText)
+                    item.scrollIntoView();
+                    browser.highlightItem(item);
+                    discount = (item.$('p.offer').getText().split(' '))[1];
+                    console.log('discount: '+ discount)
                     discountRate = discount.slice(0,2);
                     priceNow = priceNow - (priceNow * discount/100);
                 }
-                if (itemTxt.includes('SAVE')) {
-                    discount = (item.$('a*=SAVE').getText().split(' '))[1];
+                if (itemText.includes('EXTRA' && '%')) {
+                    console.log(itemText)
+                    item.scrollIntoView();
+                    browser.highlightItem(item);
+                    discount = (item.$('p.offer').getText().split(' '))[1];
+                    console.log('discount: '+ discount)
                     discountRate = discount.slice(0,2);
                     priceNow = priceNow - (priceNow * discount/100);
                 }
@@ -69,6 +87,7 @@ class SalePage extends Page {
                         name = name.split('.').join('').split('/').join('');
                         filePath = 'screenshots/60to70/' + percent + ' ' + name + '.png';
                         if (!fs.existsSync(filePath)) {
+                            item.$('img').scrollIntoView();
                             browser.highlightItem(item.$('div.item-brand'));
                             browser.saveScreenshot(filePath);
                             browser.removeHighlight(item.$('div.item-brand'));
@@ -82,6 +101,7 @@ class SalePage extends Page {
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
                     if (!fs.existsSync(filePath)) {
+                        item.$('img').scrollIntoView();
                         browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
                         browser.removeHighlight(item.$('div.item-brand'));
@@ -94,6 +114,7 @@ class SalePage extends Page {
                     name = name.split('.').join('').split('/').join('');
                     filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
                     if (!fs.existsSync(filePath)) {
+                        item.$('img').scrollIntoView();
                         browser.highlightItem(item.$('div.item-brand'));
                         browser.saveScreenshot(filePath);
                         browser.removeHighlight(item.$('div.item-brand'));

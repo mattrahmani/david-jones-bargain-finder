@@ -2,14 +2,6 @@ const { assert } = require('chai');
 const Page = require('./page');
 const fs = require('fs');
 
-// let itemCounts;
-// let saleRange1 = [];
-// let saleRange2 = [];
-// let saleRange3 = [];
-// let priceNow, priceWas, itemBrand, itemName, name, filePath;
-// let i = 0;
-// let itemsCalculated = 0;
-
 class SalePage extends Page {
     get loadMoreBtn() {return $('a[class="btn load-products loading-button externalLink"]')}
     get loadCompletedBtn() {return $('a.progress-completed')}
@@ -38,93 +30,76 @@ class SalePage extends Page {
 
     calculateDiscount() {
 
-        let priceNow, priceWas, itemBrand, itemName, name, filePath, itemHtml, percent, discount, discountRate, pricing, itemText;
+        let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discount, discountRate, pricingHtml, offerText;
         let itemsCalculated = 0;
         let itemCounts = this.items.length;
-        
 
         this.items.forEach(item => {
             itemsCalculated++;
-            // item.scrollIntoView();
-            // browser.waitUntil(() => item.isDisplayedInViewport());
-            itemHtml = item.getHTML();
-            itemText = item.getText();
-            // console.log(itemTxt)
-            // pricing = item.$('div.pricing');
-            // let newMan = pricing.getHtml();
-            // console.log(itemsCalculated)
-            if (itemHtml.includes('was', 'now')) {
+            if (item.getAttribute('class') == 'item type-0 isUpdated') {
+                pricingHtml = item.$('div.pricing').getHTML();
+                if (pricingHtml.includes('was')) {
+                    priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
+                    priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
+                    if (item.$('div.item-detail').getText().includes('SAVE')) {
+                        discount = (item.$('p.offer').getText().split(' '))[1];
+                        discountRate = discount.slice(0,2);
+                        priceNow = priceNow - (priceNow * discountRate/100);
+                    }
+                    if (item.$('div.item-detail').getText().includes('EXTRA')) {
+                        offerText = item.$('p.offer').getText();
+                        console.log(offerText);
+                        discount = (item.$('p.offer').getText().split(' '))[1];
+                        discountRate = discount.slice(0,2);
+                        priceNow = priceNow - (priceNow * discountRate/100);
+                    }
                 
-                
-                priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
-                priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
-                if (itemText.includes('SAVE', '%')) {
-                    // console.log(itemText)
-                    // item.scrollIntoView();
-                    // browser.highlightItem(item);
-                    discount = (item.$('p.offer').getText().split(' '))[1];
-                    // console.log('discount: '+ discount)
-                    discountRate = discount.slice(0,2);
-                    priceNow = priceNow - (priceNow * discountRate/100);
-                    // console.log('now: ' + priceNow)
-                }
-                if (itemText.includes('EXTRA', '%')) {
-                    // console.log(itemText)
-                    // item.scrollIntoView();
-                    // browser.highlightItem(item);
-                    discount = (item.$('p.offer').getText().split(' '))[1];
-                    // console.log('discount: '+ discount)
-                    discountRate = discount.slice(0,2);
-                    priceNow = priceNow - (priceNow * discountRate/100);
-                    // console.log('now: ' + priceNow)
-                }
+                    percent = ((1-(priceNow/priceWas))*100).toFixed(0);
 
-                percent = ((1-(priceNow/priceWas))*100).toFixed(0);
-
-                if (65<=percent && percent<70) {
-                    
+                    if (65<=percent && percent<70) {
+                        
                         itemBrand = item.$('div.item-brand').getText();
                         itemName = item.$('div.item-detail h4 a').getText();
                         name = itemBrand + ' ' + itemName;
                         name = name.split('.').join('').split('/').join('');
                         filePath = 'screenshots/60to70/' + percent + ' ' + name + '.png';
                         if (!fs.existsSync(filePath)) {
-                            item.$('img').scrollIntoView();
-                            browser.highlightItem(item.$('div.item-brand'));
+                            item.scrollIntoView();
+                            browser.highlightItem(item);
                             browser.saveScreenshot(filePath);
-                            browser.removeHighlight(item.$('div.item-brand'));
+                            browser.removeHighlight(item);
                         }
-                    
-                }
-                if (70<=percent && percent<80) {
-                    itemBrand = item.$('div.item-brand').getText();
-                    itemName = item.$('div.item-detail h4 a').getText();
-                    name = itemBrand + ' ' + itemName;
-                    name = name.split('.').join('').split('/').join('');
-                    filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
-                    if (!fs.existsSync(filePath)) {
-                        item.$('img').scrollIntoView();
-                        browser.highlightItem(item.$('div.item-brand'));
-                        browser.saveScreenshot(filePath);
-                        browser.removeHighlight(item.$('div.item-brand'));
+                    }
+                    if (70<=percent && percent<80) {
+                        itemBrand = item.$('div.item-brand').getText();
+                        itemName = item.$('div.item-detail h4 a').getText();
+                        name = itemBrand + ' ' + itemName;
+                        name = name.split('.').join('').split('/').join('');
+                        filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
+                        if (!fs.existsSync(filePath)) {
+                            item.scrollIntoView();
+                            browser.highlightItem(item);
+                            browser.saveScreenshot(filePath);
+                            browser.removeHighlight(item);
+                        }
+                    }
+                    if (80<=percent) {
+                        itemBrand = item.$('div.item-brand').getText();
+                        itemName = item.$('div.item-detail h4 a').getText();
+                        name = itemBrand + ' ' + itemName;
+                        name = name.split('.').join('').split('/').join('');
+                        filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
+                        if (!fs.existsSync(filePath)) {
+                            item.scrollIntoView();
+                            browser.highlightItem(item);
+                            browser.saveScreenshot(filePath);
+                            browser.removeHighlight(item);
+                        }
                     }
                 }
-                if (80<=percent) {
-                    itemBrand = item.$('div.item-brand').getText();
-                    itemName = item.$('div.item-detail h4 a').getText();
-                    name = itemBrand + ' ' + itemName;
-                    name = name.split('.').join('').split('/').join('');
-                    filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
-                    if (!fs.existsSync(filePath)) {
-                        item.$('img').scrollIntoView();
-                        browser.highlightItem(item.$('div.item-brand'));
-                        browser.saveScreenshot(filePath);
-                        browser.removeHighlight(item.$('div.item-brand'));
-                    }
-                }
-                
             }
         })
+
         assert.equal(itemCounts, itemsCalculated, '!!!!! Some items are not calculated !!!!!');
     }
 

@@ -4,10 +4,8 @@ const fs = require('fs');
 
 class SalePage extends Page {
     get loadMoreBtn() {return $('a[class="btn load-products loading-button externalLink"]')}
-    get loadCompletedBtn() {return $('a.progress-completed')}
     get noMoreResults() {return $('a.btn.load-products.loading-button.externalLink.disabled')}
     get items() {return $$('div.item')}
-    get productLoaderButton() {return $('div.product-loader-button a')}
     get backTopButton() {return $('div#back-top')}
 
     loadAllProducts(category) {
@@ -30,25 +28,25 @@ class SalePage extends Page {
 
     calculateDiscount() {
 
-        let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discount, discountRate, pricingHtml, offerText;
+        let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discount, discountRate, pricingHtml, offerText, itemDetail;
         let itemsCalculated = 0;
         let itemCounts = this.items.length;
 
         this.items.forEach(item => {
             itemsCalculated++;
-            if (item.getAttribute('class') == 'item type-0 isUpdated') {
+            if (item.getAttribute('class').startsWith('item')) {
                 pricingHtml = item.$('div.pricing').getHTML();
                 if (pricingHtml.includes('was')) {
                     priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
                     priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
-                    if (item.$('div.item-detail').getText().includes('SAVE')) {
+                    itemDetail = item.$('div.item-detail').getText();
+                    if (itemDetail.includes('SAVE') && itemDetail.includes('%')) {
                         discount = (item.$('p.offer').getText().split(' '))[1];
                         discountRate = discount.slice(0,2);
                         priceNow = priceNow - (priceNow * discountRate/100);
                     }
-                    if (item.$('div.item-detail').getText().includes('EXTRA')) {
+                    if (itemDetail.includes('EXTRA') && itemDetail.includes('%')) {
                         offerText = item.$('p.offer').getText();
-                        console.log(offerText);
                         discount = (item.$('p.offer').getText().split(' '))[1];
                         discountRate = discount.slice(0,2);
                         priceNow = priceNow - (priceNow * discountRate/100);
@@ -105,14 +103,6 @@ class SalePage extends Page {
 
     getNumber(text) {
         return Number(text.slice(1).split(',').join(''));
-    }
-
-    logSaleItems(category) {
-        // console.log('\n=====>>>' + category + ' sale list between 60%-70%:');
-        // for (let i=0; i<saleRange1.length; i++) {
-        //     console.log('=====>>> ' + i + ' - ' + saleRange1[i]);
-        // }
-        console.log('Number of Items in ' + category + ' =====>>> ' + itemCounts) + '\n';
     }
 }
 

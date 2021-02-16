@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "davidjones": "wdio wdio.conf.js"
+    "dj": "wdio wdio.conf.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Matt Rahmani",
   "license": "ISC",
   "devDependencies": {
     "@wdio/cli": "^6.12.0",

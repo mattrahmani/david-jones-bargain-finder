@@ -26,7 +26,7 @@ class SalePage extends Page {
         this.backTopButton.click();
     }
 
-    calculateDiscount() {
+    calculateDiscount(category) {
 
         let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discount, discountRate, pricingHtml, offerText, itemDetail;
         let itemsCalculated = 0;
@@ -53,13 +53,13 @@ class SalePage extends Page {
                 
                     percent = ((1-(priceNow/priceWas))*100).toFixed(0);
 
-                    if (65<=percent && percent<70) {
+                    if (percent >= 60) {
                         
                         itemBrand = item.$('div.item-brand').getText();
                         itemName = item.$('div.item-detail h4 a').getText();
                         name = itemBrand + ' ' + itemName;
                         name = name.split('.').join('').split('/').join('');
-                        filePath = 'screenshots/60to70/' + percent + ' ' + name + '.png';
+                        filePath = 'screenshots/' + category + '/' + percent + ' ' + name + '.png';
                         if (!fs.existsSync(filePath)) {
                             item.scrollIntoView();
                             browser.highlightItem(item);
@@ -67,32 +67,32 @@ class SalePage extends Page {
                             browser.removeHighlight(item);
                         }
                     }
-                    if (70<=percent && percent<80) {
-                        itemBrand = item.$('div.item-brand').getText();
-                        itemName = item.$('div.item-detail h4 a').getText();
-                        name = itemBrand + ' ' + itemName;
-                        name = name.split('.').join('').split('/').join('');
-                        filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
-                        if (!fs.existsSync(filePath)) {
-                            item.scrollIntoView();
-                            browser.highlightItem(item);
-                            browser.saveScreenshot(filePath);
-                            browser.removeHighlight(item);
-                        }
-                    }
-                    if (80<=percent) {
-                        itemBrand = item.$('div.item-brand').getText();
-                        itemName = item.$('div.item-detail h4 a').getText();
-                        name = itemBrand + ' ' + itemName;
-                        name = name.split('.').join('').split('/').join('');
-                        filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
-                        if (!fs.existsSync(filePath)) {
-                            item.scrollIntoView();
-                            browser.highlightItem(item);
-                            browser.saveScreenshot(filePath);
-                            browser.removeHighlight(item);
-                        }
-                    }
+                    // if (70<=percent && percent<80) {
+                    //     itemBrand = item.$('div.item-brand').getText();
+                    //     itemName = item.$('div.item-detail h4 a').getText();
+                    //     name = itemBrand + ' ' + itemName;
+                    //     name = name.split('.').join('').split('/').join('');
+                    //     filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
+                    //     if (!fs.existsSync(filePath)) {
+                    //         item.scrollIntoView();
+                    //         browser.highlightItem(item);
+                    //         browser.saveScreenshot(filePath);
+                    //         browser.removeHighlight(item);
+                    //     }
+                    // }
+                    // if (80<=percent) {
+                    //     itemBrand = item.$('div.item-brand').getText();
+                    //     itemName = item.$('div.item-detail h4 a').getText();
+                    //     name = itemBrand + ' ' + itemName;
+                    //     name = name.split('.').join('').split('/').join('');
+                    //     filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
+                    //     if (!fs.existsSync(filePath)) {
+                    //         item.scrollIntoView();
+                    //         browser.highlightItem(item);
+                    //         browser.saveScreenshot(filePath);
+                    //         browser.removeHighlight(item);
+                    //     }
+                    // }
                 }
             }
         })

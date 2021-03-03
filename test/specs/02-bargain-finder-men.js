@@ -5,8 +5,7 @@ describe('David Jones bargain finder', () => {
     it('should find bargains from Men category', () => {
         SalePage.open('sale/men');
         SalePage.loadAllProducts('Men');
-        SalePage.calculateDiscount();
-        // SalePage.logSaleItems('Men');
+        SalePage.calculateDiscount('Men');
         console.log('=====>>> Men bargains search is finished <<<=====\n')
     });
 });

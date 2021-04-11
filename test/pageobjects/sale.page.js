@@ -6,6 +6,7 @@ class SalePage extends Page {
     get loadMoreBtn() {return $('a[class="btn load-products loading-button externalLink"]')}
     get noMoreResults() {return $('a.btn.load-products.loading-button.externalLink.disabled')}
     get items() {return $$('div.item')}
+    // get items() {return $$('div.item>div.item-detail')}
     get backTopButton() {return $('div#back-top')}
 
     loadAllProducts(category) {
@@ -28,14 +29,14 @@ class SalePage extends Page {
 
     calculateDiscount(category) {
 
-        let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discount, discountRate, pricingHtml, offerText, itemDetail;
+        let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discount, discountRate, pricingHtml, itemDetail;
         let itemsCalculated = 0;
         let itemCounts = this.items.length;
 
         this.items.forEach(item => {
             itemsCalculated++;
             if (item.getAttribute('class').startsWith('item')) {
-                pricingHtml = item.$('div.pricing').getHTML();
+                pricingHtml = item.$('div.pricing').getHTML(false);
                 if (pricingHtml.includes('was')) {
                     priceWas = this.getNumber(item.$('p.price.was span.price-display').getText());
                     priceNow = this.getNumber(item.$('p.price.now span.price-display').getText());
@@ -53,7 +54,7 @@ class SalePage extends Page {
                 
                     percent = ((1-(priceNow/priceWas))*100).toFixed(0);
 
-                    if (percent >= 60) {
+                    if (percent >= 70) {
                         
                         itemBrand = item.$('div.item-brand').getText();
                         itemName = item.$('div.item-detail h4 a').getText();
@@ -67,32 +68,6 @@ class SalePage extends Page {
                             browser.removeHighlight(item);
                         }
                     }
-                    // if (70<=percent && percent<80) {
-                    //     itemBrand = item.$('div.item-brand').getText();
-                    //     itemName = item.$('div.item-detail h4 a').getText();
-                    //     name = itemBrand + ' ' + itemName;
-                    //     name = name.split('.').join('').split('/').join('');
-                    //     filePath = 'screenshots/70to80/' + percent + ' ' + name + '.png';
-                    //     if (!fs.existsSync(filePath)) {
-                    //         item.scrollIntoView();
-                    //         browser.highlightItem(item);
-                    //         browser.saveScreenshot(filePath);
-                    //         browser.removeHighlight(item);
-                    //     }
-                    // }
-                    // if (80<=percent) {
-                    //     itemBrand = item.$('div.item-brand').getText();
-                    //     itemName = item.$('div.item-detail h4 a').getText();
-                    //     name = itemBrand + ' ' + itemName;
-                    //     name = name.split('.').join('').split('/').join('');
-                    //     filePath = 'screenshots/over80/' + percent + ' ' + name + '.png';
-                    //     if (!fs.existsSync(filePath)) {
-                    //         item.scrollIntoView();
-                    //         browser.highlightItem(item);
-                    //         browser.saveScreenshot(filePath);
-                    //         browser.removeHighlight(item);
-                    //     }
-                    // }
                 }
             }
         })

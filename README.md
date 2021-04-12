@@ -1,6 +1,6 @@
 # david-jones-bargain-finder
 
-This Robot is able to find bargains from David Jones store and take screenshots of products come with more than 60% discount. 
+This Robot is able to find bargains from David Jones store and take screenshots of products come with more than 70% discount. 
 
 Steps to run the project on your local:
 

@@ -47,7 +47,7 @@ class SalePage extends Page {
                         priceNow = priceNow - (priceNow * discountRate/100);
                     }
                     if (itemDetail.includes('EXTRA') && itemDetail.includes('%')) {
-                        discount = (item.$('p.offer').getText().split(' '))[1];
+                        discount = (item.$('p.offer').getText().slice(-3));
                         discountRate = discount.slice(0,2);
                         priceNow = priceNow - (priceNow * discountRate/100);
                     }

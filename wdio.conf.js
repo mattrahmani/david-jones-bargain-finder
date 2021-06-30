@@ -211,13 +211,11 @@ exports.config = {
         
         if(passed != true){
             console.log("###########################   TEST FAILED : "+ test.title +"  ###################################");
-            
             browser.saveScreenshot("errorScreenshot/"+test.title+" Error.png");
         }
 
         if(error == true){
             console.log("###########################   TEST FAILED : "+ test.title +"  ###################################");
-            
             browser.saveScreenshot("errorScreenshot/"+test.title+" Error.png");
         }
     },

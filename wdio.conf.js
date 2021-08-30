@@ -19,7 +19,7 @@ exports.config = {
     specs: [
         // './test/specs/**/*.js',
         './test/specs/01-bargain-finder-women.js',
-        './test/specs/02-bargain-finder-men.js',
+        // './test/specs/02-bargain-finder-men.js',
         // './test/specs/bargain-finder-home.js',
         // './test/specs/bargain-finder-accessories.js',
         // './test/specs/bargain-finder-beauty.js',
@@ -104,7 +104,7 @@ exports.config = {
     baseUrl: 'https://www.davidjones.com/',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 90000,
+    waitforTimeout: 120000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response

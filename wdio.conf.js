@@ -17,8 +17,8 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        // './test/specs/**/*.js',
-        './test/specs/01-bargain-finder-women.js',
+        './test/specs/**/*.js',
+        // './test/specs/01-bargain-finder-women.js',
         // './test/specs/02-bargain-finder-men.js',
         // './test/specs/bargain-finder-home.js',
         // './test/specs/bargain-finder-accessories.js',

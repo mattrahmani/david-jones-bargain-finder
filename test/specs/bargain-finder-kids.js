@@ -4,7 +4,7 @@ describe('David Jones bargain finder', () => {
 
     it('should find bargains from Kids category', () => {
         SalePage.open('sale/kids');
-        SalePage.loadAllProducts('Kids');
+        // SalePage.loadAllProducts('Kids');
         SalePage.calculateDiscount('Kids');
         console.log('=====>>> Kids bargains search is finished <<<=====\n')
     });

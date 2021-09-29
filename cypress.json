@@ -1,0 +1,6 @@
+{
+    "baseUrl": "https://www.davidjones.com/",
+    "viewportHeight": 1080,
+    "viewportWidth": 1920,
+    "defaultCommandTimeout": 20000
+}

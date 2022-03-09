@@ -14,7 +14,7 @@ class onSalePage extends Page {
 
     loadAllProducts(category) {
         this.calculateTotalPages();
-        let j = 1, i;
+        let j = 2, i;
         for (i = 0; i < totalPages; i++) {
             console.log(category + ' --->> loading page ' + (i+1) + ' of ' + totalPages);
             if (this.noMoreResults.isExisting()) {
@@ -24,8 +24,8 @@ class onSalePage extends Page {
                 this.loadMoreBtn.scrollIntoView(false);
                 this.loadMoreBtn.waitForClickable();
                 this.loadMoreBtn.click();
+                browser.waitUntil(() => $$('div.page-' + j + '.isUpdated').length > 0, { timeout: 150000 })
                 j++;
-                browser.waitUntil(() => $$('div.page-' + j + '.isUpdated').length > 0, { timeout: 60000 })
             }
         }
         expect(this.noMoreResults.isExisting());

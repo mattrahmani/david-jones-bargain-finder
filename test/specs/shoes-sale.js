@@ -1,6 +1,7 @@
 const onSalePage = require('../pageobjects/sale-page');
 
-describe('David Jones bargain finder', () => {
+describe('David Jones bargain finder', function () {
+    this.retries(1);
 
     it('should find bargains from Shoes category', () => {
         const category = "shoes";

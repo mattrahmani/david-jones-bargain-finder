@@ -1,10 +1,11 @@
 const onSalePage = require('../pageobjects/sale-page');
 
-describe('David Jones bargain finder', () => {
+describe('David Jones bargain finder', function () {
+    this.retries(1);
 
     it('should find bargains from Accessories category', () => {
         const category = "accessories";
-        discount = process.env.DISCOUNT || 60;
+        discount = process.env.DISCOUNT || 70;
         onSalePage.open('sale/bags-and-accessories');
         onSalePage.loadAllProducts(category);
         onSalePage.confirmScreenshotFolderIsExisting(category);

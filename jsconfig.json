@@ -5,10 +5,4 @@
       "webdriverio/sync",
       "@wdio/mocha-framework"
     ]
-  },
-  "include": [
-    "./node_modules/cypress",
-    "cypress/**/*.js",
-    "cypress/plugins/index.js"
-  ]
-}
+  }

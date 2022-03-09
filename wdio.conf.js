@@ -1,3 +1,5 @@
+const fs = require('fs');
+const discount = process.env.DISCOUNT;
 exports.config = {
     //
     // ====================
@@ -18,21 +20,10 @@ exports.config = {
     //
     specs: [
         './test/specs/**/*.js',
-        // './test/specs/01-bargain-finder-women.js',
-        // './test/specs/02-bargain-finder-men.js',
-        // './test/specs/bargain-finder-home.js',
-        // './test/specs/bargain-finder-accessories.js',
-        // './test/specs/bargain-finder-beauty.js',
-        // './test/specs/bargain-finder-designer.js',
-        // './test/specs/bargain-finder-electrical.js',
-        // './test/specs/bargain-finder-kids.js',
-        // './test/specs/bargain-finder-shoes.js'
     ],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
-        // './test/specs/bargain-finder-designer.js',
-        // './test/specs/02-bargain-finder-men.js',
     ],
     //
     // ============
@@ -57,11 +48,11 @@ exports.config = {
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
     capabilities: [{
-    
+
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 3,
         //
         browserName: 'chrome',
         acceptInsecureCerts: true
@@ -104,11 +95,11 @@ exports.config = {
     baseUrl: 'https://www.davidjones.com/',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 120000,
+    waitforTimeout: 10000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 12000000,
+    connectionRetryTimeout: 120000,
     //
     // Default request retries count
     connectionRetryCount: 3,
@@ -117,8 +108,9 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
-    
+    services:
+        ['chromedriver'],
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
@@ -142,18 +134,37 @@ exports.config = {
     reporters: ['spec'],
 
 
-    
+
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 12000000
+        timeout: 60000000
     },
     //
     // =====
     // Hooks
     // =====
+
+    afterStep: function (test, context, { error, result, duration, passed, retries }) {
+        if (error) {
+            browser.takeScreenshot();
+        }
+    },
+
+    afterTest: function (test, context, { error, result, duration, passed, retries }) {
+
+        if (passed != true) {
+            console.log("###########################   TEST FAILED : " + test.title + "  ###################################");
+            browser.saveScreenshot("errorScreenshot/" + test.title + " Error.png");
+        }
+
+        if (error == true) {
+            console.log("###########################   TEST FAILED : " + test.title + "  ###################################");
+            browser.saveScreenshot("errorScreenshot/" + test.title + " Error.png");
+        }
+    },
     // WebdriverIO provides several hooks you can use to interfere with the test process in order to enhance
     // it and to build services around it. You can either apply a single function or an array of
     // methods to it. If one of them returns with a promise, WebdriverIO will wait until that promise got
@@ -163,8 +174,11 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+        if (fs.existsSync('errorScreenshot/')) {
+            fs.rmSync('errorScreenshot/', { recursive: true, force: true });
+        }
+    },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -183,8 +197,12 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // beforeSession: function (config, capabilities, specs) {
-    // },
+    beforeSession: function (config, capabilities, specs) {
+        global.discount = discount;
+        if (!fs.existsSync('errorScreenshot/')) {
+            fs.mkdirSync('errorScreenshot/');
+        }
+    },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -192,33 +210,8 @@ exports.config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {Object}         browser      instance of created browser/device session
      */
-    before: function (capabilities, specs) {
-        browser.addCommand('highlightItem', function (element) {
-            browser.execute('arguments[0].style.outline = "#f00 solid 4px";', element);
-        });
-        browser.addCommand('removeHighlight', function (element) {
-            browser.execute('arguments[0].style.outline = "#f00 solid 0px";', element);
-        });
-    },
-
-    afterStep: function (test, context, { error, result, duration, passed, retries }) {
-        if (error) {
-            browser.takeScreenshot();
-        }
-      },
-
-    afterTest: function (test, context, { error, result, duration, passed, retries }) {
-        
-        if(passed != true){
-            console.log("###########################   TEST FAILED : "+ test.title +"  ###################################");
-            browser.saveScreenshot("errorScreenshot/"+test.title+" Error.png");
-        }
-
-        if(error == true){
-            console.log("###########################   TEST FAILED : "+ test.title +"  ###################################");
-            browser.saveScreenshot("errorScreenshot/"+test.title+" Error.png");
-        }
-    },
+    // before: function (capabilities, specs) {
+    // },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name

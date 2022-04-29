@@ -2,44 +2,44 @@ const { assert } = require('chai');
 const Page = require('./page');
 const fs = require('fs');
 const path = require('path');
-let screenshotSubFolder, totalPages, totalItems, existingItems, today;
+let screenshotSubFolder, lastPage, existingItems, today, currentPage, itemsCalculated = 0;
 
 class onSalePage extends Page {
-    get loadMoreBtn() { return $('a[class="btn load-products loading-button externalLink"]') }
-    get noMoreResults() { return $('a.btn.load-products.loading-button.externalLink.disabled') }
     get items() { return $$('div.item') }
-    // get items() {return $$('div.item>div.item-detail')}
-    get backTopButton() { return $('div#back-top') }
-    get totalItemsElement() { return $('span.search-numbers') }
+    get lastPageButton() { return $('div.bottom li.visible-pagination:nth-last-child(2) a') }
+    get nextBtn() { return $('div.bottom li.next a') }
+    get pageLoad() { return $('body[class*=loading]') }
+    get noResultsFound() { return $('div.product-no-results') }
+    get backTopBtn() { return $('div#back-top') }
 
-    loadAllProducts(category) {
-        this.calculateTotalPages();
-        let j = 2, i;
-        for (i = 0; i < totalPages; i++) {
-            console.log(category + ' --->> loading page ' + (i+1) + ' of ' + totalPages);
-            if (this.noMoreResults.isExisting()) {
-                break;
+    catchBargains(category) {
+        this.getTodayDate();
+        lastPage = Number(this.lastPageButton.getText());
+        currentPage = 1;
+
+        while (currentPage <= lastPage) {
+            let firstProductID = this.items[0].getAttribute('data-pdid');
+            console.log(`${category} --->> page ${currentPage} of ${lastPage}`);
+            this.calculateDiscount(category);
+            currentPage++;
+            if (this.nextBtn.isExisting()) {
+                this.nextBtn.scrollIntoView();
+                this.nextBtn.waitForClickable();
+                this.nextBtn.click();
+                this.backTopBtn.waitForDisplayed({ reverse: true });
+                if (this.noResultsFound.isExisting() || !this.items[0].isExisting()) {
+                    currentPage = lastPage + 1;
+                } else {
+                    browser.waitUntil(() => firstProductID != this.items[0].getAttribute('data-pdid'), { timeout: 10000 })
+                }
             }
-            else {
-                this.loadMoreBtn.scrollIntoView(false);
-                this.loadMoreBtn.waitForClickable();
-                this.loadMoreBtn.click();
-                browser.waitUntil(() => $$('div.page-' + j + '.isUpdated').length > 0, { timeout: 150000 })
-                j++;
-            }
-        }
-        expect(this.noMoreResults.isExisting());
-        assert.equal(i+1, totalPages, '!!!!! Some pages are still not loaded successfully !!!!!');
-        this.backTopButton.scrollIntoView();
-        this.backTopButton.waitForClickable();
-        this.backTopButton.click();
+        };
     }
 
     confirmScreenshotFolderIsExisting(category) {
         let screenshotMainFolder = 'screenshots/';
         if (!fs.existsSync(screenshotMainFolder)) {
             fs.mkdirSync(screenshotMainFolder);
-            // return screenshotFolder;
         }
         screenshotSubFolder = 'screenshots/' + category + '/';
         if (!fs.existsSync(screenshotSubFolder)) {
@@ -51,11 +51,12 @@ class onSalePage extends Page {
     calculateDiscount(category) {
 
         let priceNow, priceWas, itemBrand, itemName, name, filePath, percent, discountTxt,
-            discountRate, pricingHtml, itemDetail, itemsCalculated = 0,
-            itemCounts = this.items.length;
-        this.getTodayDate();
+            discountRate, pricingHtml, itemDetail;
+
         this.items.forEach(item => {
             try {
+                item.waitForDisplayed();
+
                 itemsCalculated++;
                 if (item.getAttribute('class').startsWith('item')) {
                     pricingHtml = item.$('div.pricing').getHTML(false);
@@ -86,9 +87,11 @@ class onSalePage extends Page {
                             let fileName = percent + '% Off (Now $' + priceNow + ') ' + name + '.png';
                             filePath = screenshotSubFolder + today + '--> ' + percent + '% Off (Now $' + priceNow + ') ' + name + '.png';
                             if (!existingItems.includes(fileName)) {
-                                item.scrollIntoView(false);
-                                browser.waitUntil(() => item.$('div.pricing').isDisplayedInViewport());
-                                item.$('img').isDisplayed();
+                                browser.waitUntil(() => {
+                                    item.scrollIntoView();
+                                    return this.isInViewport(item);
+                                }, { timeout: 30000 });
+                                browser.waitUntil(() => item.$('figure img').isDisplayed());
                                 this.drawHighlight(item);
                                 browser.saveScreenshot(filePath);
                                 this.removeHighlight(item);
@@ -98,33 +101,32 @@ class onSalePage extends Page {
                 }
             } catch (error) {
                 console.log('An error happened while scanning --->> ' + name);
-                item.scrollIntoView();
-                this.drawHighlight(item);
-                filePath = 'errorScreenshot/' + category + ' error.png';
-                browser.saveScreenshot(filePath);
-                this.removeHighlight(item);
+                if (item.isExisting()) {
+                    item.scrollIntoView();
+                    this.drawHighlight(item);
+                    filePath = 'errorScreenshot/' + category + ' error.png';
+                    browser.saveScreenshot(filePath);
+                    this.removeHighlight(item);
+                } else {
+                    filePath = 'errorScreenshot/' + category + ' error.png';
+                    browser.saveScreenshot(filePath);
+                }
                 throw error;
             }
 
         })
-        assert.equal(itemCounts, itemsCalculated, '!!!!! Some items are not calculated !!!!!');
-        console.log('\n=====>>> ' + category + ' bargains search is finished after scanning ' + totalItems + ' items <<<=====\n')
+    }
+
+    verifyAllPagesAreScanned(category) {
+        assert.equal(currentPage - 1, lastPage, '=====>>> Some pages are not scanned <<<=====');
+        console.log('=====>>> ' + category + ' bargains search is finished after scanning ' + itemsCalculated + ' items <<<=====\n')
     }
 
     getNumber(text) {
         return Number(text.slice(1).split(',').join(''));
     }
 
-    getItemsCount() {
-        return this.items.length;
-    }
-
-    calculateTotalPages() {
-        totalItems = Number(this.totalItemsElement.getText());
-        totalPages = Math.floor((totalItems / Number(this.loadMoreBtn.getText().split(' ')[2]))) + 1;
-    }
-
-    getExistingItems() {
+    getExistingScreenshots() {
         existingItems = [];
         const directoryPath = path.join(screenshotSubFolder);
         fs.readdir(directoryPath, function (err, files) {
@@ -132,7 +134,6 @@ class onSalePage extends Page {
                 let fileName = file.toString().split(' ').slice(1).join(' ');
                 existingItems.push(fileName);
             });
-            // console.log('********: ' +existingItems.length);
         });
 
         return existingItems;
@@ -142,6 +143,26 @@ class onSalePage extends Page {
         let date = new Date();
         today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
     }
+
+    // getTotalItems() {
+    //     totalItems = $('span.search-numbers').getText();
+    //     console.log(`Total items --->> ${totalItems}`);
+    //     return totalItems;
+    // }
+
+    isInViewport(item) {
+        return browser.execute(function (element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }, item)
+    }
+
+
 }
 
 module.exports = new onSalePage();

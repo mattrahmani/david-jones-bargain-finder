@@ -6,10 +6,10 @@ describe('David Jones bargain finder', function () {
     it('should find bargains from Home category', () => {
         const category = "home";
         discount = process.env.DISCOUNT || 60;
-        onSalePage.open('sale/home-and-food');
-        onSalePage.loadAllProducts(category);
+        onSalePage.open('sale-and-offers/home');
         onSalePage.confirmScreenshotFolderIsExisting(category);
-        onSalePage.getExistingItems();
-        onSalePage.calculateDiscount(category);
+        onSalePage.getExistingScreenshots();
+        onSalePage.catchBargains(category);
+        onSalePage.verifyAllPagesAreScanned(category);
     });
 });

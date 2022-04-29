@@ -7,9 +7,9 @@ describe('David Jones bargain finder', function () {
         const category = "shoes";
         discount = process.env.DISCOUNT || 70;
         onSalePage.open('sale/shoes');
-        onSalePage.loadAllProducts(category);
         onSalePage.confirmScreenshotFolderIsExisting(category);
-        onSalePage.getExistingItems();
-        onSalePage.calculateDiscount(category);
+        onSalePage.getExistingScreenshots();
+        onSalePage.catchBargains(category);
+        onSalePage.verifyAllPagesAreScanned(category);
     });
 });

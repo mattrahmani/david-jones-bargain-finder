@@ -7,9 +7,9 @@ describe('David Jones bargain finder', function () {
         const category = "beauty";
         discount = process.env.DISCOUNT || 60;
         onSalePage.open('sale/beauty');
-        onSalePage.loadAllProducts(category);
         onSalePage.confirmScreenshotFolderIsExisting(category);
-        onSalePage.getExistingItems();
-        onSalePage.calculateDiscount(category);
+        onSalePage.getExistingScreenshots();
+        onSalePage.catchBargains(category);
+        onSalePage.verifyAllPagesAreScanned(category);
     });
 });

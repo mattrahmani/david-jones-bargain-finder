@@ -5,11 +5,11 @@ describe('David Jones bargain finder', function () {
 
     it('should find bargains from Electrical category', () => {
         const category = "electrical";
-        discount = process.env.DISCOUNT || 60;
+        discount = process.env.DISCOUNT || 55;
         onSalePage.open('sale/electrical');
-        onSalePage.loadAllProducts(category);
         onSalePage.confirmScreenshotFolderIsExisting(category);
-        onSalePage.getExistingItems();
-        onSalePage.calculateDiscount(category);
+        onSalePage.getExistingScreenshots();
+        onSalePage.catchBargains(category);
+        onSalePage.verifyAllPagesAreScanned(category);
     });
 });

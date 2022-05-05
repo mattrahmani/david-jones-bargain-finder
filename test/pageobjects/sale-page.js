@@ -30,7 +30,7 @@ class onSalePage extends Page {
                 if (this.noResultsFound.isExisting() || !this.items[0].isExisting()) {
                     currentPage = lastPage + 1;
                 } else {
-                    browser.waitUntil(() => firstProductID != this.items[0].getAttribute('data-pdid'), { timeout: 10000 })
+                    browser.waitUntil(() => firstProductID != this.items[0].getAttribute('data-pdid'), { timeout: 20000 })
                 }
             }
         };

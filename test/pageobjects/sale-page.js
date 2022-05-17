@@ -55,7 +55,7 @@ class onSalePage extends Page {
 
         this.items.forEach(item => {
             try {
-                item.waitForDisplayed();
+                item.waitForExist();
 
                 itemsCalculated++;
                 if (item.getAttribute('class').startsWith('item')) {

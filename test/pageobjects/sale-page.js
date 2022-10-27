@@ -86,7 +86,7 @@ class onSalePage extends Page {
                             priceNow = Number(priceNow).toFixed(0);
                             let fileName = percent + '% Off (Now $' + priceNow + ') ' + name + '.png';
                             filePath = screenshotSubFolder + today + '--> ' + percent + '% Off (Now $' + priceNow + ') ' + name + '.png';
-                            if (!existingItems.includes(fileName)) {
+                            if (!existingItems.includes(fileName.toLowerCase())) {
                                 browser.waitUntil(() => {
                                     item.scrollIntoView();
                                     return this.isInViewport(item);
@@ -131,7 +131,7 @@ class onSalePage extends Page {
         const directoryPath = path.join(screenshotSubFolder);
         fs.readdir(directoryPath, function (err, files) {
             files.forEach(function (file) {
-                let fileName = file.toString().split(' ').slice(1).join(' ');
+                let fileName = file.toString().split(' ').slice(1).join(' ').toLowerCase();
                 existingItems.push(fileName);
             });
         });

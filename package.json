@@ -13,7 +13,8 @@
     "beauty": "wdio wdio.conf.js --spec beauty",
     "designer": "wdio wdio.conf.js --spec designer",
     "toys": "wdio wdio.conf.js --spec designer",
-    "electrical": "wdio wdio.conf.js --spec electrical"
+    "electrical": "wdio wdio.conf.js --spec electrical",
+    "shoes": "wdio wdio.conf.js --spec shoes"
   },
   "keywords": [],
   "author": "Matt Rahmani",
@@ -25,8 +26,9 @@
     "@wdio/spec-reporter": "^7.25.4",
     "@wdio/sync": "^7.25.4",
     "chai": "^4.3.7",
-    "chromedriver": "^107.0.3",
+    "chromedriver": "^114.0.1",
     "prettier": "^2.7.1",
-    "wdio-chromedriver-service": "^8.0.0"
+    "selenium-standalone": "^8.3.0",
+    "wdio-chromedriver-service": "^8.1.1"
   }
 }

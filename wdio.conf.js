@@ -55,8 +55,10 @@ exports.config = {
         maxInstances: 3,
         //
         browserName: 'chrome',
+        browserVersion: '114.0',
         'goog:chromeOptions': {
-            args: ['--headless', '--disable-gpu', 'window-size=1920,1080']
+            args: ['--headless', '--disable-gpu', 'window-size=2048,1152'],
+            binary: '/Applications/Google Chrome 114.app/Contents/MacOS/Google Chrome',  // Path to Chrome v114
         },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
@@ -82,10 +84,10 @@ exports.config = {
     // - @wdio/sumologic-reporter
     // - @wdio/cli, @wdio/config, @wdio/sync, @wdio/utils
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    // logLevels: {
-    //     webdriver: 'info',
-    //     '@wdio/applitools-service': 'info'
-    // },
+    logLevels: {
+        webdriver: 'error',
+        '@wdio/applitools-service': 'error'
+    },
     //
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).
@@ -153,6 +155,7 @@ exports.config = {
     afterStep: function (test, context, { error, result, duration, passed, retries }) {
         if (error) {
             browser.takeScreenshot();
+            throw error;
         }
     },
 
